@@ -1,0 +1,74 @@
+#!/usr/bin/env node
+
+'use strict';
+
+const yargs = require('yargs');
+const run = require('../src').run;
+
+// Collect args
+const argv = yargs
+  .usage(
+    'Create Relay generated files\n\n' +
+      '$0 --schema <path> --src <path> [--watch]',
+  )
+  .options({
+    schema: {
+      describe: 'Path to schema.graphql or schema.json',
+      demandOption: true,
+      type: 'string',
+    },
+    src: {
+      describe: 'Root directory of application code',
+      demandOption: true,
+      type: 'string',
+    },
+    include: {
+      array: true,
+      default: ['**'],
+      describe: 'Directories to include under src',
+      type: 'string',
+    },
+    exclude: {
+      array: true,
+      default: [
+        '**/node_modules/**',
+        '**/__mocks__/**',
+        '**/__tests__/**',
+        '**/__generated__/**',
+      ],
+      describe: 'Directories to ignore under src',
+      type: 'string',
+    },
+    extensions: {
+      array: true,
+      default: ['js', 'jsx', 'coffee', 'cjsx'],
+      describe: 'File extensions to compile (--extensions js jsx coffee cjsx)',
+      type: 'string',
+    },
+    verbose: {
+      describe: 'More verbose logging',
+      type: 'boolean',
+    },
+    watchman: {
+      describe: 'Use watchman when not in watch mode',
+      type: 'boolean',
+      default: true,
+    },
+    watch: {
+      describe: 'If specified, watches files and regenerates on changes',
+      type: 'boolean',
+    },
+    validate: {
+      describe:
+        'Looks for pending changes and exits with non-zero code instead of ' +
+        'writing to disk',
+      type: 'boolean',
+      default: false,
+    },
+  })
+  .help().argv;
+
+run(argv).catch(error => {
+  console.error(String(error.stack || error));
+  process.exit(1);
+});

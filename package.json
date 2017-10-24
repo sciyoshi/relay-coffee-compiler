@@ -1,0 +1,38 @@
+{
+  "name": "relay-coffee-compiler",
+  "version": "0.0.2",
+  "description": "Relay GraphQL compiler for CoffeeScript",
+  "bin": {
+    "relay-coffee-compiler": "bin/relay-coffee-compiler"
+  },
+  "scripts": {
+    "build": "coffee -c -t src/"
+  },
+  "author": "Samuel Cormier-Iijima <samuel@cormier-iijima.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/polyfill": "^7.0.0-beta.36",
+    "coffeescript": "^2.1.1",
+    "fast-glob": "^1.0.1",
+    "relay-compiler": "^1.4.1",
+    "yargs": "^10.1.0"
+  },
+  "coffeelintConfig": {
+    "no_tabs": {
+      "level": "ignore"
+    },
+    "indentation": {
+      "value": 1
+    },
+    "max_line_length": {
+      "value": 160
+    }
+  },
+  "devDependencies": {
+    "@babel/core": "^7.0.0-beta.36",
+    "@babel/preset-env": "^7.0.0-beta.36",
+    "babel-core": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "coffeelint": "^2.0.7"
+  }
+}

@@ -21,7 +21,7 @@ parseFile = (baseDir, file) ->
 
 	astDefinitions = []
 
-	for {tag, template} in FindGraphQLTags.memoizedFind(text, baseDir, file)
+	for {tag, template} in FindGraphQLTags.memoizedFind(text, baseDir, file, {})
 		if tag != 'graphql'
 			throw new Error('Invalid tag #{tag} in #{file.relPath}. Expected graphql\`\`.')
 

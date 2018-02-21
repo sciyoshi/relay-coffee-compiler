@@ -7,7 +7,7 @@ import glob from 'fast-glob'
 import * as RelayCompiler from 'relay-compiler'
 import * as GraphQL from 'graphql'
 
-import { WatchmanClient } from 'relay-compiler/lib/GraphQLCompilerPublic'
+import { WatchmanClient, DotGraphQLParser } from 'relay-compiler/lib/GraphQLCompilerPublic'
 
 import * as CoffeeParser from './parser'
 
@@ -33,6 +33,7 @@ getFilepathsFromGlob = (baseDir, {extensions, include, exclude}) ->
 
 getRelayFileWriter = (baseDir) ->
 	{
+		commonTransforms
 		codegenTransforms
 		fragmentTransforms
 		printTransforms
@@ -40,11 +41,12 @@ getRelayFileWriter = (baseDir) ->
 		schemaExtensions
 	} = RelayCompiler.IRTransforms
 
-	(onlyValidate, schema, documents, baseDocuments) ->
+	({ onlyValidate, schema, documents, baseDocuments, sourceControl, reporter }) ->
 		new RelayCompiler.FileWriter {
 			config: {
 				baseDir
 				compilerTransforms: {
+					commonTransforms
 					codegenTransforms
 					fragmentTransforms
 					printTransforms
@@ -60,6 +62,8 @@ getRelayFileWriter = (baseDir) ->
 			schema
 			baseDocuments
 			documents
+			reporter
+			sourceControl
 		}
 
 
@@ -71,13 +75,13 @@ getSchema = (schemaPath) ->
 			source = GraphQL.printSchema GraphQL.buildClientSchema JSON.parse(source).data
 
 		source = """
-			directive @include(if: Boolean) on FRAGMENT | FIELD
-			directive @skip(if: Boolean) on FRAGMENT | FIELD
+			directive @include(if: Boolean) on FRAGMENT_SPREAD | FIELD
+			directive @skip(if: Boolean) on FRAGMENT_SPREAD | FIELD
 
 			#{source}
 			"""
 
-		return GraphQL.buildASTSchema GraphQL.parse source
+		return GraphQL.buildASTSchema GraphQL.parse(source), assumeValid: true
 	catch error
 		throw new Error """
 			Error loading schema. Expected the schema to be a .graphql or a .json
@@ -134,21 +138,35 @@ export run = (options) ->
 
 	useWatchman = options.watchman and await WatchmanClient.isAvailable()
 
+	schema = getSchema(schemaPath)
+
+	graphqlOptions =
+		extensions: ['graphql']
+		include: options.include
+		exclude: options.exclude
+
 	parserConfigs =
-		default:
+		js:
 			baseDir: srcDir
 			getFileFilter: CoffeeParser.getFileFilter
 			getParser: CoffeeParser.getParser
-			getSchema: () -> getSchema(schemaPath),
+			getSchema: () -> schema,
 			watchmanExpression: if useWatchman then buildWatchExpression(options) else null
 			filepaths: if useWatchman then null else getFilepathsFromGlob(srcDir, options)
+		graphql:
+			baseDir: srcDir
+			getParser: DotGraphQLParser.getParser
+			getSchema: () -> schema,
+			watchmanExpression: if useWatchman then buildWatchExpression(graphqlOptions) else null
+			filepaths: if useWatchman then null else getFilepathsFromGlob(srcDir, graphqlOptions)
 
 	writerConfigs =
-		default:
+		js:
 			getWriter: getRelayFileWriter(srcDir)
 			isGeneratedFile: (filePath) ->
 				filePath.endsWith('.js') and filePath.includes('__generated__')
-			parser: 'default'
+			parser: 'js'
+			baseParsers: ['graphql']
 
 	codegenRunner = new RelayCompiler.Runner {
 		reporter

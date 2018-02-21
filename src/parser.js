@@ -42,7 +42,7 @@ var parseFile;
 
 // Throws an error if parsing the file fails
 parseFile = function parseFile(baseDir, file) {
-  var ast, astDefinitions, i, len, ref, ref1, tag, template, text;
+  var ast, astDefinitions, i, len, ref, ref1, template, text;
   text = _fs2.default.readFileSync(_path2.default.join(baseDir, file.relPath), 'utf8');
   (0, _assert2.default)(text.indexOf('graphql') >= 0, 'RelayJSModuleParser: Files should be filtered before passed to the parser, got unfiltered file `#{file}`.');
   if ((ref = _path2.default.extname(file.relPath)) === '.coffee' || ref === '.cjsx') {
@@ -53,13 +53,7 @@ parseFile = function parseFile(baseDir, file) {
   for (i = 0, len = ref1.length; i < len; i++) {
     var _astDefinitions;
 
-    var _ref1$i = ref1[i];
-    tag = _ref1$i.tag;
-    template = _ref1$i.template;
-
-    if (tag !== 'graphql') {
-      throw new Error('Invalid tag #{tag} in #{file.relPath}. Expected graphql\`\`.');
-    }
+    template = ref1[i];
     ast = GraphQL.parse(new GraphQL.Source(template, file.relPath));
     (0, _assert2.default)(ast.definitions.length, 'RelayJSModuleParser: Expected GraphQL text to contain at least one definition (fragment, mutation, query, subscription), got `#{template}`.');
     (_astDefinitions = astDefinitions).push.apply(_astDefinitions, _toConsumableArray(ast.definitions));

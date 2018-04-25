@@ -5,6 +5,18 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.run = undefined;
 
+var _parser = require('./parser');
+
+Object.keys(_parser).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _parser[key];
+    }
+  });
+});
+
 require('babel-polyfill');
 
 var _fs = require('fs');
@@ -28,8 +40,6 @@ var _graphql = require('graphql');
 var GraphQL = _interopRequireWildcard(_graphql);
 
 var _GraphQLCompilerPublic = require('relay-compiler/lib/GraphQLCompilerPublic');
-
-var _parser = require('./parser');
 
 var CoffeeParser = _interopRequireWildcard(_parser);
 

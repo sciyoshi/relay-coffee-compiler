@@ -11,6 +11,7 @@ import { WatchmanClient, DotGraphQLParser } from 'relay-compiler/lib/GraphQLComp
 
 import * as CoffeeParser from './parser'
 
+export * from './parser'
 
 buildWatchExpression = (options) -> [
 	'allof',
@@ -188,4 +189,3 @@ export run = (options) ->
 	process.exit(101) if options.validate and result != 'NO_CHANGES'
 
 	return result
-

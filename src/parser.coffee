@@ -5,7 +5,7 @@ import coffeescript from 'coffeescript'
 
 import * as GraphQL from 'graphql'
 import FindGraphQLTags from 'relay-compiler/lib/FindGraphQLTags'
-import { ASTCache } from 'relay-compiler/lib/GraphQLCompilerPublic'
+import { ASTCache } from 'graphql-compiler'
 
 
 # Throws an error if parsing the file fails

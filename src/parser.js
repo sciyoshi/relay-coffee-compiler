@@ -29,7 +29,7 @@ var _FindGraphQLTags = require('relay-compiler/lib/FindGraphQLTags');
 
 var _FindGraphQLTags2 = _interopRequireDefault(_FindGraphQLTags);
 
-var _GraphQLCompilerPublic = require('relay-compiler/lib/GraphQLCompilerPublic');
+var _graphqlCompiler = require('graphql-compiler');
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -65,7 +65,7 @@ parseFile = function parseFile(baseDir, file) {
 };
 
 var getParser = exports.getParser = function getParser(baseDir) {
-  return new _GraphQLCompilerPublic.ASTCache({
+  return new _graphqlCompiler.ASTCache({
     baseDir: baseDir,
     parse: parseFile
   });

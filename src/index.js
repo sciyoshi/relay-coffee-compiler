@@ -39,7 +39,7 @@ var _graphql = require('graphql');
 
 var GraphQL = _interopRequireWildcard(_graphql);
 
-var _GraphQLCompilerPublic = require('relay-compiler/lib/GraphQLCompilerPublic');
+var _graphqlCompiler = require('graphql-compiler');
 
 var CoffeeParser = _interopRequireWildcard(_parser);
 
@@ -241,7 +241,7 @@ var run = exports.run = function () {
             }
 
             _context.next = 16;
-            return _GraphQLCompilerPublic.WatchmanClient.isAvailable();
+            return _graphqlCompiler.WatchmanClient.isAvailable();
 
           case 16:
             _context.t0 = _context.sent;
@@ -268,7 +268,7 @@ var run = exports.run = function () {
               },
               graphql: {
                 baseDir: srcDir,
-                getParser: _GraphQLCompilerPublic.DotGraphQLParser.getParser,
+                getParser: _graphqlCompiler.DotGraphQLParser.getParser,
                 getSchema: function getSchema() {
                   return schema;
                 },

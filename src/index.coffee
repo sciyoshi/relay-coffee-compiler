@@ -7,7 +7,7 @@ import glob from 'fast-glob'
 import * as RelayCompiler from 'relay-compiler'
 import * as GraphQL from 'graphql'
 
-import { WatchmanClient, DotGraphQLParser } from 'relay-compiler/lib/GraphQLCompilerPublic'
+import { WatchmanClient, DotGraphQLParser } from 'graphql-compiler'
 
 import * as CoffeeParser from './parser'
 

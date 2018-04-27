@@ -8,6 +8,7 @@
   "scripts": {
     "build": "coffee -c -t src/"
   },
+  "main": "./src/index.js",
   "author": "Samuel Cormier-Iijima <samuel@cormier-iijima.com>",
   "license": "MIT",
   "dependencies": {

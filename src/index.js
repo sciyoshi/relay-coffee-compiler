@@ -105,6 +105,7 @@ getFilepathsFromGlob = function getFilepathsFromGlob(baseDir, _ref) {
     cwd: baseDir,
     bashNative: [],
     onlyFiles: true,
+    dot: true,
     ignore: exclude
   });
 };

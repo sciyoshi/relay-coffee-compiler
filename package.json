@@ -1,6 +1,6 @@
 {
   "name": "relay-coffee-compiler",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Relay GraphQL compiler for CoffeeScript",
   "bin": {
     "relay-coffee-compiler": "bin/relay-coffee-compiler"

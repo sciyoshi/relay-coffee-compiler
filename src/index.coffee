@@ -29,6 +29,7 @@ getFilepathsFromGlob = (baseDir, {extensions, include, exclude}) ->
 		cwd: baseDir
 		bashNative: []
 		onlyFiles: true
+		dot: true
 		ignore: exclude
 
 
